@@ -43,23 +43,35 @@ public class Bank {
         System.out.println(Accounts);
     }
 
-    public void newTransaction(float Amount, int originatingID, int recipientID, String Description) throws BankException{
+    public void listTransactions(){
+        System.out.println(Transactions);
+    }
+
+    public void newTransaction(float Amount, int originatingID, int recipientID, String Description, boolean tType) throws BankException{
+        float Fee;
+        if(tType){      // If true Transaction using flat Fee
+            Fee = transactionFlatFee;
+        }
+        else{
+            Fee = transactionPercentFee/100*Amount;
+        }
+
         if(!Accounts.containsKey(recipientID)){
             throw new BankException("The Recipient Not Found!");
         }
-        else if(Accounts.get(originatingID).getBalance() < Amount){
+        else if(Accounts.get(originatingID).getBalance() < (Amount+Fee)){   // The User needs enough money for the fee aswell
             throw new BankException("Insufficient funds!");
         }
         else{
-            Transaction T = new Transaction(tLastKey++, Amount, originatingID, recipientID, Description);
+            Transaction T = new Transaction(tLastKey++, (Amount+Fee), originatingID, recipientID, Description);
             Transactions.put(T.getTransactionID(), T);
-            sendMoney(originatingID, recipientID, Amount);
+            sendMoney(originatingID, recipientID, Amount, Fee);
         }
     }
 
-    public void sendMoney(int originatingID, int recipientID, float Amount){
+    public void sendMoney(int originatingID, int recipientID, float Amount, float Fee){
         try {
-            Accounts.get(originatingID).setBalance(Accounts.get(originatingID).getBalance() - Amount);
+            Accounts.get(originatingID).setBalance(Accounts.get(originatingID).getBalance() - (Amount+Fee));
             Accounts.get(recipientID).setBalance(Accounts.get(recipientID).getBalance() + Amount);
         }catch(BankException b){
             System.out.println(b);
@@ -85,16 +97,17 @@ public class Bank {
     }
 
     public static void main(String [] args){
-        try {
-       /*     Bank BKT = new Bank("BKT", 5, 1);
+        /*try {
+            Bank BKT = new Bank("BKT", 5, 1);
             BKT.addAccount("Eroll");
             BKT.addAccount("Filani");
-            BKT.deposit(2, 500);
+            BKT.deposit(1, 450);
             BKT.listAccounts();
-            BKT.newTransaction(5, 1, 2, "Hello");
-            BKT.listAccounts();*/
+            BKT.newTransaction(100, 1, 2, "Hello", false);
+            BKT.listTransactions();
+            BKT.listAccounts();
         }catch(BankException b){
             System.out.println(b);
-        }
+        }*/
     }
 }
