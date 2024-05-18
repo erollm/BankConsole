@@ -11,6 +11,25 @@ public class Bank {
     private int aLastKey = 1;
     private int tLastKey = 1;
 
+    public Bank(String Name, float transactionFlatFee, float transactionPercentFee) throws BankException{
+        if(Name == null || Name.isEmpty()){
+            throw new BankException("Bank Name cannot be empty. Please provide a valid name.");
+        }
+        else if(transactionFlatFee < 0){
+            throw new BankException("Transaction flat fee cannot be negative");
+        }
+        else if(transactionPercentFee < 0){
+            throw new BankException("Transaction percentage fee cannot be negative");
+        }
+        else {
+            this.Name = Name;
+            this.transactionFlatFee = transactionFlatFee;
+            this.transactionPercentFee = transactionPercentFee;
+            Accounts = new HashMap<Integer, Account>();
+            Transactions = new HashMap<Integer, Transaction>();
+        }
+    }
+
     public void addAccount(String Name)throws BankException{
         try{
             Account A = new Account(aLastKey++, Name);
@@ -24,4 +43,58 @@ public class Bank {
         System.out.println(Accounts);
     }
 
+    public void newTransaction(float Amount, int originatingID, int recipientID, String Description) throws BankException{
+        if(!Accounts.containsKey(recipientID)){
+            throw new BankException("The Recipient Not Found!");
+        }
+        else if(Accounts.get(originatingID).getBalance() < Amount){
+            throw new BankException("Insufficient funds!");
+        }
+        else{
+            Transaction T = new Transaction(tLastKey++, Amount, originatingID, recipientID, Description);
+            Transactions.put(T.getTransactionID(), T);
+            sendMoney(originatingID, recipientID, Amount);
+        }
+    }
+
+    public void sendMoney(int originatingID, int recipientID, float Amount){
+        try {
+            Accounts.get(originatingID).setBalance(Accounts.get(originatingID).getBalance() - Amount);
+            Accounts.get(recipientID).setBalance(Accounts.get(recipientID).getBalance() + Amount);
+        }catch(BankException b){
+            System.out.println(b);
+        }
+    }
+
+    public void deposit(int AccountID,float Amount) throws BankException{
+        if(Amount < 0){
+            throw new BankException("Deposit amount cannot be negative!");
+        }
+        else{
+            Accounts.get(AccountID).setBalance(Accounts.get(AccountID).getBalance() + Amount);
+        }
+    }
+
+    public void withdraw(int AccountID,float Amount) throws BankException{
+        if(Amount < 0){
+            throw new BankException("Withdraw amount cannot be negative!");
+        }
+        else{
+            Accounts.get(AccountID).setBalance(Accounts.get(AccountID).getBalance() - Amount);
+        }
+    }
+
+    public static void main(String [] args){
+        try {
+       /*     Bank BKT = new Bank("BKT", 5, 1);
+            BKT.addAccount("Eroll");
+            BKT.addAccount("Filani");
+            BKT.deposit(2, 500);
+            BKT.listAccounts();
+            BKT.newTransaction(5, 1, 2, "Hello");
+            BKT.listAccounts();*/
+        }catch(BankException b){
+            System.out.println(b);
+        }
+    }
 }
