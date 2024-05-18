@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 
 public class Bank {
     private String Name;
@@ -96,18 +97,39 @@ public class Bank {
         }
     }
 
+    public void getAccountTransactions(int AccountID) throws BankException{
+        if(!Accounts.containsKey(AccountID)){
+            throw new BankException("Account not found!");
+        }
+        else{
+            int count = 0;
+            for (Map.Entry<Integer, Transaction> Entry : Transactions.entrySet()) {
+                Transaction T = Entry.getValue();
+                if(T.getOriginatingID() == AccountID || T.getRecipientID() == AccountID){
+                    System.out.println(T);
+                    count++;
+                }
+            }
+            if(count == 0){
+                throw new BankException("Account does not have any transactions yet!");
+            }
+        }
+    }
+
     public static void main(String [] args){
-        /*try {
+        try {
             Bank BKT = new Bank("BKT", 5, 1);
             BKT.addAccount("Eroll");
             BKT.addAccount("Filani");
+            BKT.addAccount("Fisteku");
             BKT.deposit(1, 450);
             BKT.listAccounts();
             BKT.newTransaction(100, 1, 2, "Hello", false);
-            BKT.listTransactions();
-            BKT.listAccounts();
+            BKT.getAccountTransactions(3);
+            /*BKT.listTransactions();
+            BKT.listAccounts();*/
         }catch(BankException b){
             System.out.println(b);
-        }*/
+        }
     }
 }
