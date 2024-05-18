@@ -116,6 +116,15 @@ public class Bank {
         }
     }
 
+    public void checkBalance(int AccountID) throws BankException{
+        if(!Accounts.containsKey(AccountID)){
+            throw new BankException("Account not found!");
+        }
+        else{
+            System.out.println(Accounts.get(AccountID).getName()+" Balance is: "+Accounts.get(AccountID).getBalance());
+        }
+    }
+
     public static void main(String [] args){
         try {
             Bank BKT = new Bank("BKT", 5, 1);
@@ -125,7 +134,7 @@ public class Bank {
             BKT.deposit(1, 450);
             BKT.listAccounts();
             BKT.newTransaction(100, 1, 2, "Hello", false);
-            BKT.getAccountTransactions(3);
+            BKT.checkBalance(1);
             /*BKT.listTransactions();
             BKT.listAccounts();*/
         }catch(BankException b){
