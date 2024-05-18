@@ -3,7 +3,7 @@ public class Account{
     private String Name;
     private float Balance;
 
-    public Account(int AccountID, String Name, float Balance) throws BankException{
+    public Account(int AccountID, String Name) throws BankException{
         this.AccountID = AccountID;
         if(Name == null || Name.isEmpty()){
             throw new BankException("Name field cannot be empty. Please provide a valid name.");
@@ -33,6 +33,10 @@ public class Account{
         else{
             this.Balance = Balance;
         }
+    }
+
+    public String toString(){
+        return "ID:"+AccountID+", Name:"+Name+", Balance:"+Balance;
     }
 
 }
