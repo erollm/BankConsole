@@ -42,4 +42,8 @@ public class Transaction {
     public String getDescription() {
         return Description;
     }
+
+    public String toString(){
+        return "ID:"+TransactionID+" Total Amount:"+Amount+" originatingID:"+originatingID+" recipientID:"+recipientID+" Description:"+Description;
+    }
 }
