@@ -8,11 +8,13 @@ public class Main {
         // Loop until a valid Bank Name is provided
         String BankName;
         do {
-            System.out.println("Enter Bank Name:");
+            System.out.println("Plase provide the name of the Bank you would like to create:");
             BankName = sc.nextLine();
             if (BankName == null || BankName.isEmpty()) {
                 System.out.println("Bank Name cannot be empty.");
             }
+            System.out.println(BankName+" Bank Successfully Created.");
+            System.out.println("To initiate the "+BankName+" Bank system please provide values for the following parameters:");
         } while (BankName == null || BankName.isEmpty());
 
         // Loop until a valid flat fee is provided
@@ -34,14 +36,14 @@ public class Main {
                 System.out.println("Transaction percentage fee cannot be negative");
             }
         } while (PercentFee < 0);
-
+        System.out.println("Bank Successfully Configured with Transaction Flat Fee of $"+FlatFee+" and Transaction Percent Fee of "+PercentFee+"%\n");
         Bank B = new Bank(BankName, FlatFee, PercentFee);
         while (true) {
             printMenu(B.getName());
             int selected = Integer.parseInt(sc.nextLine());
 
             if(selected > 10 || selected < 1){
-                System.out.println("Invalid Option Selected");
+                System.out.println("Invalid Option Selected"); // The user can choose only one of the 10 options.
                 returnMenu(sc);
                 continue;
             }
@@ -51,7 +53,7 @@ public class Main {
                 continue;
             }
             else if(selected == 5 && !B.hasTransactions()){
-                System.out.println("The bank does not have any transactions yet.");
+                System.out.println("The bank does not have any transactions yet."); // When there are no transactions, the user cannot access the View Account Transacitons.
                 returnMenu(sc);
                 continue;
             }
@@ -96,12 +98,10 @@ public class Main {
                     return;
             }
         }
-
-
     }
 
     public static void printMenu(String Name) {
-        System.out.println("----" + Name + " System Menu----");
+        System.out.println("----" + Name + " Bank System Menu----");
         System.out.println("Please select an option");
         System.out.println("1) Create New Account");
         System.out.println("2) Transfer");
@@ -125,7 +125,7 @@ public class Main {
             }
         } while (name == null || name.isEmpty());
         b.addAccount(name);
-        System.out.println("Account successfully created!");
+        System.out.println("Account successfully created!\n");
     }
 
     public static void transferMoney(Bank b, Scanner sc){
@@ -153,7 +153,7 @@ public class Main {
                 System.out.println("Enter the Transfer Description:");
                 String description = sc.nextLine();
                 b.newTransaction(amount, orgID, recipientID, description, feeType);
-                System.out.println("Successfully transferred $"+amount+" from Account"+orgID+" to Account"+recipientID);
+                System.out.println("Successfully transferred $"+amount+" from Account"+orgID+" to Account"+recipientID+"\n");
                 stayOnTransfer = false;
             }catch (BankException e){
                 System.out.println(e);
@@ -170,7 +170,7 @@ public class Main {
             float amount = Float.parseFloat(sc.nextLine());
             try{
                 b.deposit(ID, amount);
-                System.out.println("Successfully deposited $"+amount+" to Account "+ID);
+                System.out.println("Successfully deposited $"+amount+" to Account "+ID+"\n");
                 stayOnDeposit = false;
             }catch (BankException e){
                 System.out.println(e);
@@ -187,7 +187,7 @@ public class Main {
             float amount = Float.parseFloat(sc.nextLine());
             try{
                 b.withdraw(ID, amount);
-                System.out.println("Successfully withdrawn  $"+amount+" from Account "+ID);
+                System.out.println("Successfully withdrawn  $"+amount+" from Account "+ID+"\n");
                 stayOnWithdraw = false;
             }catch (BankException e){
                 System.out.println(e);
@@ -225,11 +225,11 @@ public class Main {
     }
 
     public static void checkTotalTransactionFeeAmount(Bank b){
-        System.out.println("The total of Transaction Fee Amount is: "+b.getTotalTransactionFee());
+        System.out.println("The total of Transaction Fee Amount is: "+b.getTotalTransactionFee()+"\n");
     }
 
     public static void checkTotalTransferAmount(Bank b){
-        System.out.println("The total of Transfer Amount is: "+b.getTotalOfTransfers());
+        System.out.println("The total of Transfer Amount is: "+b.getTotalOfTransfers()+"\n");
     }
 
     public static void returnMenu(Scanner sc){
