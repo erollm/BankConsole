@@ -39,6 +39,13 @@ public class Main {
         while (true) {
             printMenu(B.getName());
             int selected = Integer.parseInt(sc.nextLine());
+
+            if (selected != 1 && B.isEmpty()) { // When there are no accounts, the user can only access the Create Account option.
+                System.out.println("The bank does not have any accounts yet.");
+                returnMenu(sc);
+                continue;
+            }
+
             switch (selected) {
                 case 1:
                     createAccount(B, sc);
@@ -53,6 +60,10 @@ public class Main {
                     break;
                 case 4:
                     withdrawFromAccount(B, sc);
+                    returnMenu(sc);
+                    break;
+                case 5:
+                    viewAccountTransactions(B, sc);
                     returnMenu(sc);
                     break;
                 case 7:
@@ -97,10 +108,6 @@ public class Main {
 
     public static void transferMoney(Bank b, Scanner sc){
         boolean stayOnTransfer = true;
-        if(b.isEmpty()){
-            System.out.println("The bank does not have any accounts yet.");
-            stayOnTransfer = false;
-        }
         while(stayOnTransfer){
             try {
                 System.out.println("Select transaction fee type:");
@@ -134,10 +141,6 @@ public class Main {
 
     public static void depositToAccount(Bank b, Scanner sc){
         boolean stayOnDeposit = true;
-        if(b.isEmpty()){
-            System.out.println("The bank does not have any accounts yet.");
-            stayOnDeposit = false;
-        }
         while(stayOnDeposit){
             System.out.println("Enter the Account ID you wish to deposit to:");
             int ID = Integer.parseInt(sc.nextLine());;
@@ -155,10 +158,6 @@ public class Main {
 
     public static void withdrawFromAccount(Bank b, Scanner sc){
         boolean stayOnWithdraw = true;
-        if(b.isEmpty()){
-            System.out.println("The bank does not have any accounts yet.");
-            stayOnWithdraw = false;
-        }
         while(stayOnWithdraw){
             System.out.println("Enter the Account ID you wish to withdraw from:");
             int ID = Integer.parseInt(sc.nextLine());
@@ -168,6 +167,20 @@ public class Main {
                 b.withdraw(ID, amount);
                 System.out.println("Successfully withdrawn  $"+amount+" from Account "+ID);
                 stayOnWithdraw = false;
+            }catch (BankException e){
+                System.out.println(e);
+            }
+        }
+    }
+
+    public static void viewAccountTransactions(Bank b, Scanner sc){
+        boolean stayOnAccountTransacitons = true;
+        while(stayOnAccountTransacitons){
+            System.out.println("Enter the Account ID you wish to see the transactions of:");
+            int id = Integer.parseInt(sc.nextLine());
+            try{
+                b.getAccountTransactions(id);
+                stayOnAccountTransacitons = false;
             }catch (BankException e){
                 System.out.println(e);
             }

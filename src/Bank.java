@@ -139,6 +139,7 @@ public class Bank {
         }
         else{
             int count = 0;
+            System.out.println("---Account"+AccountID+" Transactions List---");
             for (Map.Entry<Integer, Transaction> Entry : Transactions.entrySet()) {
                 Transaction T = Entry.getValue();
                 if(T.getOriginatingID() == AccountID || T.getRecipientID() == AccountID){
