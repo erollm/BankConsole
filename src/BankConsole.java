@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Main {
+public class BankConsole {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to BankConsole");
@@ -41,7 +41,6 @@ public class Main {
         while (true) {
             printMenu(B.getName());
             int selected = Integer.parseInt(sc.nextLine());
-
             if(selected > 10 || selected < 1){
                 System.out.println("Invalid Option Selected"); // The user can choose only one of the 10 options.
                 returnMenu(sc);
@@ -153,7 +152,7 @@ public class Main {
                 System.out.println("Enter the Transfer Description:");
                 String description = sc.nextLine();
                 b.newTransaction(amount, orgID, recipientID, description, feeType);
-                System.out.println("Successfully transferred $"+amount+" from Account"+orgID+" to Account"+recipientID+"\n");
+                System.out.println("Successfully transferred $"+String.format("%.2f", amount)+" from Account"+orgID+" to Account"+recipientID+"\n");
                 stayOnTransfer = false;
             }catch (BankException e){
                 System.out.println(e);
@@ -170,7 +169,7 @@ public class Main {
             float amount = Float.parseFloat(sc.nextLine());
             try{
                 b.deposit(ID, amount);
-                System.out.println("Successfully deposited $"+amount+" to Account "+ID+"\n");
+                System.out.println("Successfully deposited $"+String.format("%.2f", amount)+" to Account "+ID+"\n");
                 stayOnDeposit = false;
             }catch (BankException e){
                 System.out.println(e);
@@ -187,7 +186,7 @@ public class Main {
             float amount = Float.parseFloat(sc.nextLine());
             try{
                 b.withdraw(ID, amount);
-                System.out.println("Successfully withdrawn  $"+amount+" from Account "+ID+"\n");
+                System.out.println("Successfully withdrawn  $"+String.format("%.2f", amount)+" from Account "+ID+"\n");
                 stayOnWithdraw = false;
             }catch (BankException e){
                 System.out.println(e);
@@ -225,11 +224,11 @@ public class Main {
     }
 
     public static void checkTotalTransactionFeeAmount(Bank b){
-        System.out.println("The total of Transaction Fee Amount is: "+b.getTotalTransactionFee()+"\n");
+        System.out.println("The total of Transaction Fee Amount is: $"+String.format("%.2f", b.getTotalTransactionFee())+"\n");
     }
 
     public static void checkTotalTransferAmount(Bank b){
-        System.out.println("The total of Transfer Amount is: "+b.getTotalOfTransfers()+"\n");
+        System.out.println("The total of Transfer Amount is: $"+String.format("%.2f", b.getTotalOfTransfers())+"\n");
     }
 
     public static void returnMenu(Scanner sc){

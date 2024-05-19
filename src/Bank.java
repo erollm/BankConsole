@@ -162,7 +162,7 @@ public class Bank {
             throw new BankException("Account not found!");
         }
         else{
-            System.out.println(Accounts.get(AccountID).getName()+" Balance is: "+Accounts.get(AccountID).getBalance());
+            System.out.println(Accounts.get(AccountID).getName()+" Balance is: $"+String.format("%.2f", Accounts.get(AccountID).getBalance()));
         }
     }
 
