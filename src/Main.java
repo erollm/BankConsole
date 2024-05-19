@@ -40,8 +40,18 @@ public class Main {
             printMenu(B.getName());
             int selected = Integer.parseInt(sc.nextLine());
 
-            if (selected != 1 && B.isEmpty()) { // When there are no accounts, the user can only access the Create Account option.
+            if(selected > 10 || selected < 1){
+                System.out.println("Invalid Option Selected");
+                returnMenu(sc);
+                continue;
+            }
+            else if (selected != 1 && B.isEmpty()) { // When there are no accounts, the user can only access the Create Account option.
                 System.out.println("The bank does not have any accounts yet.");
+                returnMenu(sc);
+                continue;
+            }
+            else if(selected == 5 && !B.hasTransactions()){
+                System.out.println("The bank does not have any transactions yet.");
                 returnMenu(sc);
                 continue;
             }
@@ -72,6 +82,14 @@ public class Main {
                     break;
                 case 7:
                     B.listAccounts();
+                    returnMenu(sc);
+                    break;
+                case 8:
+                    checkTotalTransactionFeeAmount(B);
+                    returnMenu(sc);
+                    break;
+                case 9:
+                    checkTotalTransferAmount(B);
                     returnMenu(sc);
                     break;
                 case 10:
@@ -204,6 +222,14 @@ public class Main {
                 System.out.println(e);
             }
         }
+    }
+
+    public static void checkTotalTransactionFeeAmount(Bank b){
+        System.out.println("The total of Transaction Fee Amount is: "+b.getTotalTransactionFee());
+    }
+
+    public static void checkTotalTransferAmount(Bank b){
+        System.out.println("The total of Transfer Amount is: "+b.getTotalOfTransfers());
     }
 
     public static void returnMenu(Scanner sc){
