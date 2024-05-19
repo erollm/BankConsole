@@ -66,6 +66,10 @@ public class Main {
                     viewAccountTransactions(B, sc);
                     returnMenu(sc);
                     break;
+                case 6:
+                    checkAccountBalance(B, sc);
+                    returnMenu(sc);
+                    break;
                 case 7:
                     B.listAccounts();
                     returnMenu(sc);
@@ -182,6 +186,21 @@ public class Main {
                 b.getAccountTransactions(id);
                 stayOnAccountTransacitons = false;
             }catch (BankException e){
+                System.out.println(e);
+            }
+        }
+    }
+
+    public static void checkAccountBalance(Bank b, Scanner sc){
+        boolean stayOnCheckAccountBalance = true;
+        while(stayOnCheckAccountBalance){
+            System.out.println("Enter the Account ID you wish to check the balance of:");
+            int id = Integer.parseInt(sc.nextLine());
+            try{
+                b.checkBalance(id);
+                stayOnCheckAccountBalance = false;
+            }
+            catch (BankException e){
                 System.out.println(e);
             }
         }
