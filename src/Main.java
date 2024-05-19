@@ -5,26 +5,51 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to BankConsole");
 
-        boolean isException = true;
-        while(isException){
-            System.out.println("Enter Bank Name:");
-            String BankName = sc.nextLine();
+                // Loop until a valid Bank Name is provided
+                String BankName;
+                do {
+                    System.out.println("Enter Bank Name:");
+                    BankName = sc.nextLine();
+                    if (BankName == null || BankName.isEmpty()) {
+                        sc.nextLine();
+                        System.out.println("Bank Name cannot be empty.");
+                    }
+                }while(BankName == null || BankName.isEmpty());
 
-            System.out.println("Enter Transaction Flat Fee Amount:");
-            float FlatFee = sc.nextFloat();
+                // Loop until a valid flat fee is provided
+                float FlatFee;
+                do {
+                    System.out.println("Enter Transaction Flat Fee Amount:");
+                    FlatFee = sc.nextFloat();
+                    if (FlatFee < 0) {
+                        System.out.println("Transaction flat fee cannot be negative");
+                    }
+                } while (FlatFee < 0);
 
-            System.out.println("Enter Transaction Percent Fee Amount:");
-            float PercentFee = sc.nextFloat();
+                // Loop until a valid percentage fee is provided
+                float PercentFee;
+                do {
+                    System.out.println("Enter Transaction Percent Fee Amount:");
+                    PercentFee = sc.nextFloat();
+                    if (PercentFee < 0) {
+                        System.out.println("Transaction percentage fee cannot be negative");
+                    }
+                } while (PercentFee < 0);
 
-            try {
-                Bank B = new Bank(BankName, FlatFee, PercentFee);
-                printMenu(B.getName());
-                isException = false;
-            }catch(BankException b){
-                System.out.println(b);
                 sc.nextLine();
-            }
-        }
+                Bank B = new Bank(BankName, FlatFee, PercentFee);
+                while(true){
+                    printMenu(B.getName());
+                    int selected = sc.nextInt();
+                    switch (selected){
+                        case 1:
+                            createAccount(B, sc);
+                            break;
+                        case 2:
+                            return;
+                    }
+                }
+
 
     }
 
@@ -40,6 +65,20 @@ public class Main {
             System.out.println("7) Check Total Transaction Fee Amount");
             System.out.println("8) Check Total Transfer Amount");
             System.out.println("9) Exit");
+    }
+
+    public static void createAccount(Bank b, Scanner sc){
+            String name;
+            do{
+                System.out.println("Enter Account Name:");
+                name = sc.nextLine();
+                if(name == null || name.isEmpty()){
+                    sc.nextLine();
+                    System.out.println("Name cannot be empty!");
+                }
+            }while(name == null || name.isEmpty());
+            b.addAccount(name);
+            System.out.println("Account successfully created!");
     }
 
 
