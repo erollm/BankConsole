@@ -12,23 +12,16 @@ public class Bank {
     private int aLastKey = 1;
     private int tLastKey = 1;
 
-    public Bank(String Name, float transactionFlatFee, float transactionPercentFee) throws BankException{
-        if(Name == null || Name.isEmpty()){
-            throw new BankException("Bank Name cannot be empty. Please provide a valid name.");
-        }
-        else if(transactionFlatFee < 0){
-            throw new BankException("Transaction flat fee cannot be negative");
-        }
-        else if(transactionPercentFee < 0){
-            throw new BankException("Transaction percentage fee cannot be negative");
-        }
-        else {
+    public Bank(String Name, float transactionFlatFee, float transactionPercentFee){
             this.Name = Name;
             this.transactionFlatFee = transactionFlatFee;
             this.transactionPercentFee = transactionPercentFee;
             Accounts = new HashMap<Integer, Account>();
             Transactions = new HashMap<Integer, Transaction>();
-        }
+    }
+
+    public String getName(){
+        return Name;
     }
 
     public float getTotalTransactionFee() {
@@ -47,13 +40,9 @@ public class Bank {
         this.totalOfTransfers = totalOfTransfers;
     }
 
-    public void addAccount(String Name)throws BankException{
-        try{
+    public void addAccount(String Name){
             Account A = new Account(aLastKey++, Name);
             Accounts.put(A.getAccountID(), A);
-        }catch(BankException e){
-            System.out.println(e);
-        }
     }
 
     public void listAccounts(){
@@ -145,22 +134,4 @@ public class Bank {
         }
     }
 
-    public static void main(String [] args){
-        try {
-            /*Bank BKT = new Bank("BKT", 5, 1);
-            BKT.addAccount("Eroll");
-            BKT.addAccount("Filani");
-            BKT.addAccount("Fisteku");
-            BKT.deposit(1, 450);
-            BKT.listAccounts();
-            BKT.newTransaction(100, 1, 2, "Hello", true);
-            BKT.newTransaction(20, 2, 1, "Hey", true);
-            BKT.checkBalance(1);
-            System.out.println(BKT.getTotalTransactionFee());
-            BKT.listTransactions();
-            BKT.listAccounts();*/
-        }catch(BankException b){
-            System.out.println(b);
-        }
-    }
 }
