@@ -7,8 +7,8 @@ public class Bank {
     private HashMap<Integer, Transaction> Transactions;
     private float totalTransactionFee; // The total of the transactions fees
     private float totalOfTransfers; // The total of Transfers
-    private float transactionFlatFee;
-    private float transactionPercentFee;
+    private float transactionFlatFee = 0f;
+    private float transactionPercentFee = 0f;
     private int aLastKey = 1;
     private int tLastKey = 1;
 
@@ -51,6 +51,10 @@ public class Bank {
 
     public boolean isEmpty(){
         return Accounts.isEmpty();
+    }
+
+    public boolean hasTransactions(){
+        return !Transactions.isEmpty();
     }
 
     public void addAccount(String Name){

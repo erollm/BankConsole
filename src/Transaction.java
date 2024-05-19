@@ -44,6 +44,6 @@ public class Transaction {
     }
 
     public String toString(){
-        return "ID:"+TransactionID+" Total Amount:"+Amount+" originatingID:"+originatingID+" recipientID:"+recipientID+" Description:"+Description;
+        return "ID:"+TransactionID+", Total Amount:"+Amount+", originatingID:"+originatingID+", recipientID:"+recipientID+", Description:"+Description;
     }
 }
