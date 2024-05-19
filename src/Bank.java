@@ -20,6 +20,7 @@ public class Bank {
             Transactions = new HashMap<Integer, Transaction>();
     }
 
+
     public String getName(){
         return Name;
     }
@@ -40,13 +41,33 @@ public class Bank {
         this.totalOfTransfers = totalOfTransfers;
     }
 
+    public float getTransactionFlatFee(){
+        return transactionFlatFee;
+    }
+
+    public float getTransactionPercentFee() {
+        return transactionPercentFee;
+    }
+
+    public boolean isEmpty(){
+        return Accounts.isEmpty();
+    }
+
     public void addAccount(String Name){
             Account A = new Account(aLastKey++, Name);
             Accounts.put(A.getAccountID(), A);
     }
 
     public void listAccounts(){
-        System.out.println(Accounts);
+        if(Accounts.isEmpty()){
+                System.out.println("The bank does not have any accounts yet.");
+        }
+        else {
+            System.out.println("---Account List---");
+            for (Map.Entry<Integer, Account> entry : Accounts.entrySet()) {
+                System.out.println(entry.getValue());
+            }
+        }
     }
 
     public void listTransactions(){
@@ -89,7 +110,10 @@ public class Bank {
     }
 
     public void deposit(int AccountID,float Amount) throws BankException{
-        if(Amount < 0){
+        if(!Accounts.containsKey(AccountID)){
+            throw new BankException("Account does not exist!");
+        }
+        else if(Amount < 0){
             throw new BankException("Deposit amount cannot be negative!");
         }
         else{
@@ -98,7 +122,10 @@ public class Bank {
     }
 
     public void withdraw(int AccountID,float Amount) throws BankException{
-        if(Amount < 0){
+        if(!Accounts.containsKey(AccountID)){
+            throw new BankException("Account does not exist!");
+        }
+        else if(Amount < 0){
             throw new BankException("Withdraw amount cannot be negative!");
         }
         else{
