@@ -11,7 +11,6 @@ public class Main {
             System.out.println("Enter Bank Name:");
             BankName = sc.nextLine();
             if (BankName == null || BankName.isEmpty()) {
-                sc.nextLine();
                 System.out.println("Bank Name cannot be empty.");
             }
         } while (BankName == null || BankName.isEmpty());
@@ -20,7 +19,7 @@ public class Main {
         float FlatFee;
         do {
             System.out.println("Enter Transaction Flat Fee Amount:");
-            FlatFee = sc.nextFloat();
+            FlatFee = Float.parseFloat(sc.nextLine());
             if (FlatFee < 0) {
                 System.out.println("Transaction flat fee cannot be negative");
             }
@@ -30,17 +29,16 @@ public class Main {
         float PercentFee;
         do {
             System.out.println("Enter Transaction Percent Fee Amount:");
-            PercentFee = sc.nextFloat();
+            PercentFee = Float.parseFloat(sc.nextLine());
             if (PercentFee < 0) {
                 System.out.println("Transaction percentage fee cannot be negative");
             }
         } while (PercentFee < 0);
 
-        sc.nextLine();
         Bank B = new Bank(BankName, FlatFee, PercentFee);
         while (true) {
             printMenu(B.getName());
-            int selected = sc.nextInt();
+            int selected = Integer.parseInt(sc.nextLine());
             switch (selected) {
                 case 1:
                     createAccount(B, sc);
@@ -90,7 +88,6 @@ public class Main {
             System.out.println("Enter Account Name:");
             name = sc.nextLine();
             if (name == null || name.isEmpty()) {
-                sc.nextLine();
                 System.out.println("Name cannot be empty!");
             }
         } while (name == null || name.isEmpty());
@@ -109,7 +106,7 @@ public class Main {
                 System.out.println("Select transaction fee type:");
                 System.out.println("1) Flat Fee ($" + b.getTransactionFlatFee() + ")");
                 System.out.println("2) Percent Fee (" + b.getTransactionPercentFee() + "%)");
-                byte Fee = sc.nextByte();
+                byte Fee = Byte.parseByte(sc.nextLine());
                 boolean feeType;
                 if (Fee == 1) {
                     feeType = true;
@@ -119,12 +116,11 @@ public class Main {
                     throw new BankException("Inputted fee type not valid!");
                 }
                 System.out.println("Enter the Amount of transfer:");
-                float amount = sc.nextFloat();
+                float amount = Float.parseFloat(sc.nextLine());
                 System.out.println("Enter the Originating Account ID:");
-                int orgID = sc.nextInt();
+                int orgID = Integer.parseInt(sc.nextLine());
                 System.out.println("Enter the Recieving Account ID:");
-                int recipientID = sc.nextInt();
-                sc.nextLine();
+                int recipientID = Integer.parseInt(sc.nextLine());
                 System.out.println("Enter the Transfer Description:");
                 String description = sc.nextLine();
                 b.newTransaction(amount, orgID, recipientID, description, feeType);
@@ -144,9 +140,9 @@ public class Main {
         }
         while(stayOnDeposit){
             System.out.println("Enter the Account ID you wish to deposit to:");
-            int ID = sc.nextInt();
+            int ID = Integer.parseInt(sc.nextLine());;
             System.out.println("Enter the Amount:");
-            float amount = sc.nextFloat();
+            float amount = Float.parseFloat(sc.nextLine());
             try{
                 b.deposit(ID, amount);
                 System.out.println("Successfully deposited $"+amount+" to Account "+ID);
@@ -165,9 +161,9 @@ public class Main {
         }
         while(stayOnWithdraw){
             System.out.println("Enter the Account ID you wish to withdraw from:");
-            int ID = sc.nextInt();
+            int ID = Integer.parseInt(sc.nextLine());
             System.out.println("Enter the Amount:");
-            float amount = sc.nextFloat();
+            float amount = Float.parseFloat(sc.nextLine());
             try{
                 b.withdraw(ID, amount);
                 System.out.println("Successfully withdrawn  $"+amount+" from Account "+ID);
@@ -179,7 +175,6 @@ public class Main {
     }
 
     public static void returnMenu(Scanner sc){
-        sc.nextLine();
         boolean stayOnMenu = true;
         while (stayOnMenu){
             System.out.println("Press enter to return to the menu:");
