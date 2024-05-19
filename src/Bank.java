@@ -31,6 +31,22 @@ public class Bank {
         }
     }
 
+    public float getTotalTransactionFee() {
+        return totalTransactionFee;
+    }
+
+    public float getTotalOfTransfers() {
+        return totalOfTransfers;
+    }
+
+    public void setTotalTransactionFee(float totalTransactionFee){
+        this.totalTransactionFee = totalTransactionFee;
+    }
+
+    public void setTotalOfTransfers(float totalOfTransfers){
+        this.totalOfTransfers = totalOfTransfers;
+    }
+
     public void addAccount(String Name)throws BankException{
         try{
             Account A = new Account(aLastKey++, Name);
@@ -50,23 +66,27 @@ public class Bank {
 
     public void newTransaction(float Amount, int originatingID, int recipientID, String Description, boolean tType) throws BankException{
         float Fee;
+        float AmountWFee = Amount;
         if(tType){      // If true Transaction using flat Fee
             Fee = transactionFlatFee;
+            AmountWFee += transactionFlatFee;
         }
         else{
             Fee = transactionPercentFee/100*Amount;
+            AmountWFee += transactionPercentFee/100*Amount;
         }
-
         if(!Accounts.containsKey(recipientID)){
             throw new BankException("The Recipient Not Found!");
         }
-        else if(Accounts.get(originatingID).getBalance() < (Amount+Fee)){   // The User needs enough money for the fee aswell
+        else if(Accounts.get(originatingID).getBalance() < AmountWFee){   // The User needs enough money for the fee aswell
             throw new BankException("Insufficient funds!");
         }
         else{
-            Transaction T = new Transaction(tLastKey++, (Amount+Fee), originatingID, recipientID, Description);
+            Transaction T = new Transaction(tLastKey++, AmountWFee, originatingID, recipientID, Description);
             Transactions.put(T.getTransactionID(), T);
             sendMoney(originatingID, recipientID, Amount, Fee);
+            setTotalOfTransfers(getTotalOfTransfers()+AmountWFee);
+            setTotalTransactionFee(getTotalTransactionFee()+Fee);
         }
     }
 
@@ -127,15 +147,17 @@ public class Bank {
 
     public static void main(String [] args){
         try {
-            Bank BKT = new Bank("BKT", 5, 1);
+            /*Bank BKT = new Bank("BKT", 5, 1);
             BKT.addAccount("Eroll");
             BKT.addAccount("Filani");
             BKT.addAccount("Fisteku");
             BKT.deposit(1, 450);
             BKT.listAccounts();
-            BKT.newTransaction(100, 1, 2, "Hello", false);
+            BKT.newTransaction(100, 1, 2, "Hello", true);
+            BKT.newTransaction(20, 2, 1, "Hey", true);
             BKT.checkBalance(1);
-            /*BKT.listTransactions();
+            System.out.println(BKT.getTotalTransactionFee());
+            BKT.listTransactions();
             BKT.listAccounts();*/
         }catch(BankException b){
             System.out.println(b);
